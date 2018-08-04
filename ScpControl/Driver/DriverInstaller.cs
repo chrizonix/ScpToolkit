@@ -24,13 +24,12 @@ namespace ScpControl.Driver
 
         #endregion
 
-        public static WdiErrorCode InstallBluetoothHost(WdiDeviceInfo usbDevice, IntPtr hWnd = default(IntPtr))
+        public static WdiErrorCode InstallBluetoothHost(WdiDeviceInfo usbDevice, IntPtr hWnd = default(IntPtr), bool force = false)
         {
             usbDevice.InfFile = string.Format("BluetoothHost_{0:X4}_{1:X4}.inf", usbDevice.VendorId, usbDevice.ProductId);
             usbDevice.DeviceType = WdiUsbDeviceType.BluetoothHost;
 
-            var result = WdiWrapper.InstallWinUsbDriver(usbDevice, BthDongle.DeviceClassGuid, DriverDirectory,
-                usbDevice.InfFile, hWnd);
+            var result = WdiWrapper.Instance.InstallWinUsbDriver(usbDevice.DeviceId, BthDongle.DeviceClassGuid, DriverDirectory, usbDevice.InfFile, hWnd, force);
 
             if (result != WdiErrorCode.WDI_SUCCESS)
             {
@@ -68,13 +67,12 @@ namespace ScpControl.Driver
             return uninstalled;
         }
 
-        public static WdiErrorCode InstallDualShock3Controller(WdiDeviceInfo usbDevice, IntPtr hWnd = default(IntPtr))
+        public static WdiErrorCode InstallDualShock3Controller(WdiDeviceInfo usbDevice, IntPtr hWnd = default(IntPtr), bool force = false)
         {
             usbDevice.InfFile = string.Format("Ds3Controller_{0:X4}_{1:X4}.inf", usbDevice.VendorId, usbDevice.ProductId);
             usbDevice.DeviceType = WdiUsbDeviceType.DualShock3;
 
-            var result = WdiWrapper.InstallWinUsbDriver(usbDevice, UsbDs3.DeviceClassGuid,
-                DriverDirectory, usbDevice.InfFile, hWnd);
+            var result = WdiWrapper.Instance.InstallWinUsbDriver(usbDevice.DeviceId, UsbDs3.DeviceClassGuid, DriverDirectory, usbDevice.InfFile, hWnd, force);
 
             if (result != WdiErrorCode.WDI_SUCCESS)
             {
@@ -113,12 +111,12 @@ namespace ScpControl.Driver
             return uninstalled;
         }
         
-        public static WdiErrorCode InstallDualShock4Controller(WdiDeviceInfo usbDevice, IntPtr hWnd = default(IntPtr))
+        public static WdiErrorCode InstallDualShock4Controller(WdiDeviceInfo usbDevice, IntPtr hWnd = default(IntPtr), bool force = false)
         {
             usbDevice.InfFile = string.Format("Ds4Controller_{0:X4}_{1:X4}.inf", usbDevice.VendorId, usbDevice.ProductId);
             usbDevice.DeviceType = WdiUsbDeviceType.DualShock4;
 
-            var result = WdiWrapper.InstallWinUsbDriver(usbDevice, UsbDs4.DeviceClassGuid, DriverDirectory, usbDevice.InfFile, hWnd);
+            var result = WdiWrapper.Instance.InstallWinUsbDriver(usbDevice.DeviceId, UsbDs4.DeviceClassGuid, DriverDirectory, usbDevice.InfFile, hWnd, force);
 
             if (result != WdiErrorCode.WDI_SUCCESS)
             {
