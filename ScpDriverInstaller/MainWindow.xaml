@@ -92,17 +92,17 @@
                                       VerticalAlignment="Top" Margin="20,10,20,0"
                                       BorderBrush="LightGray">
                                 <StackPanel>
-                                <CheckBox IsChecked="{Binding Path=SelfSignedDriversEnabled}" 
+                                <CheckBox IsChecked="{Binding Path=SelfSignedDriversEnabled}"
                                           Content="{x:Static Properties:Resources.DualShockSetupSelfSignedDrivers}"
                                           Margin="0,10,0,0"/>
-                                <CheckBox IsChecked="{Binding Path=ForceInstallEnabled}" 
+                                <CheckBox IsChecked="{Binding Path=ForceInstallEnabled}"
                                           Content="{x:Static Properties:Resources.DualShockSetupForceInstall}"
                                           ToolTip="{x:Static Properties:Resources.DualShockSetupForceInstallTooltip}"
                                           Margin="0,10,0,0"/>
                                 </StackPanel>
                             </Expander>
                         </StackPanel>
-                        
+
                         <StackPanel Grid.Row="1" Grid.Column="0">
                             <!-- Install button -->
                             <Button IsEnabled="{Binding Path=InstallDs3ButtonEnabled}"
