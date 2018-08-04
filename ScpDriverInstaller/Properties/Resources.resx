@@ -173,6 +173,13 @@
     <value>In this step you can initialize one or more DualShock 3/4 controllers.</value>
     <comment>Text directly visible under the title, showing a quick description of the DualShock driver setup</comment>
   </data>
+  <data name="DualShockSetupForceInstall" xml:space="preserve">
+    <value>Force Driver Installation (most of the time not needed)</value>
+    <comment>Forces the installation of all drivers even if they are fine (most of the time not needed)</comment>
+  </data>
+  <data name="DualShockSetupForceInstallTooltip" xml:space="preserve">
+    <value>Forces the installation of all drivers even if they are fine (most of the time not needed)</value>
+  </data>
   <data name="DualShockSetupInitialized" xml:space="preserve">
     <value>Initialized DualShock Controllers</value>
     <comment>Header of the group of DualShock controllers ready for usage</comment>
@@ -189,13 +196,22 @@
     <value>If you haven't already, please plug in your DualShock 3 (or 4) controller with the USB cable now and wait until it appears in the list on the right.</value>
     <comment>Text asking the user to plug his controllers</comment>
   </data>
+  <data name="DualShockSetupSelfSignedDrivers" xml:space="preserve">
+    <value>Use Self-Signed Drivers (only needed for DS4v2)</value>
+  </data>
   <data name="DualShockSetupStartInstall" xml:space="preserve">
     <value>Initialize all connected devices as DualShock 3/4 Controllers</value>
     <comment>Button to start the setup</comment>
   </data>
+  <data name="DualShockSetupSuccessContent" xml:space="preserve">
+    <value>Please check devices in "initialized" section. If controller shows as "uninitialized", use the check box for self-signed drivers under "advanced settings".</value>
+  </data>
   <data name="DualShockSetupSuccessInstruction" xml:space="preserve">
-    <value>DualShock controllers installed successfully</value>
+    <value>DualShock Driver Install Status</value>
     <comment>Instruction of the setup success dialog box</comment>
+  </data>
+  <data name="DualShockSetupSuccessTitle" xml:space="preserve">
+    <value>DualShock Driver Status</value>
   </data>
   <data name="DualShockSetupTitle" xml:space="preserve">
     <value>Install DualShock 3/4 Controllers</value>

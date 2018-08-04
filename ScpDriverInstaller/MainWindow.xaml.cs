@@ -102,105 +102,92 @@ namespace ScpDriverInstaller
         private void OnUsbDeviceAddedOrRemoved()
         {
             var usbDevices = WdiWrapper.Instance.UsbDeviceList.ToList();
+
             var supportedBluetoothDevices = IniConfig.Instance.BthDongleDriver.HardwareIds;
+            var supportedDualShockDevices = IniConfig.Instance.Ds3Driver.HardwareIds.Union(IniConfig.Instance.Ds4Driver.HardwareIds);
+
             var regex = new Regex("VID_([0-9A-Z]{4})&PID_([0-9A-Z]{4})", RegexOptions.IgnoreCase);
 
             // HidUsb devices
             {
-                DualShockStackPanelHidUsb.Children.Clear();
-                _viewModel.InstallDs3ButtonEnabled = false;
+	            DualShockStackPanelHidUsb.Children.Clear();
+	            _viewModel.InstallDs3ButtonEnabled = false;
 
-                foreach (
-                    var usbDevice in
+	            foreach (
+	                var usbDevice in
                         usbDevices.Where(
-                            d => d.VendorId == _hidUsbDs3.VendorId
-                                 && (d.ProductId == _hidUsbDs3.ProductId || d.ProductId == _hidUsbDs4.ProductId)
-                                 && !string.IsNullOrEmpty(d.CurrentDriver)
-                                 && d.CurrentDriver.Equals("HidUsb"))
-                    )
-                {
-                    DualShockStackPanelHidUsb.Children.Add(new TextBlock
-                    {
-                        Text = string.Format("Device #{0}: {1}", DualShockStackPanelHidUsb.Children.Count, usbDevice),
-                        Tag = usbDevice,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(10, 0, 0, 10)
-                    });
+                            d => supportedDualShockDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
+                                 && !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("HidUsb"))
+	            ) {
+		            DualShockStackPanelHidUsb.Children.Add(new TextBlock {
+			            Text = string.Format("Device #{0}: {1}", DualShockStackPanelHidUsb.Children.Count, usbDevice),
+			            Tag = usbDevice,
+			            VerticalAlignment = VerticalAlignment.Center,
+			            Margin = new Thickness(10, 0, 0, 10)
+		            });
 
-                    _viewModel.InstallDs3ButtonEnabled = true;
-                }
+		            _viewModel.InstallDs3ButtonEnabled = true;
+	            }
             }
 
             // WinUsb devices
             {
-                DualShockStackPanelWinUsb.Children.Clear();
+	            DualShockStackPanelWinUsb.Children.Clear();
 
-                foreach (
-                    var usbDevice in
-                        usbDevices.Where(
-                            d => d.VendorId == _hidUsbDs3.VendorId
-                                 && (d.ProductId == _hidUsbDs3.ProductId || d.ProductId == _hidUsbDs4.ProductId)
-                                 && !string.IsNullOrEmpty(d.CurrentDriver)
-                                 && d.CurrentDriver.Equals("WinUSB"))
-                    )
-                {
-                    DualShockStackPanelWinUsb.Children.Add(new TextBlock
-                    {
-                        Text = string.Format("Device #{0}: {1}", DualShockStackPanelWinUsb.Children.Count, usbDevice),
-                        Tag = usbDevice,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(10, 0, 0, 10)
-                    });
-                }
+	            foreach (
+	                var usbDevice in
+	                    usbDevices.Where(
+	                        d => supportedDualShockDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
+	                             && !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("WinUSB"))
+	            ) {
+		            DualShockStackPanelWinUsb.Children.Add(new TextBlock {
+			            Text = string.Format("Device #{0}: {1}", DualShockStackPanelWinUsb.Children.Count, usbDevice),
+			            Tag = usbDevice,
+			            VerticalAlignment = VerticalAlignment.Center,
+			            Margin = new Thickness(10, 0, 0, 10)
+		            });
+	            }
             }
 
             // refresh devices filtering on supported Bluetooth hardware IDs and BTHUSB driver (uninitialized)
             {
-                var uninitialized =
+	            var uninitialized =
                     usbDevices.Where(
-                        d =>
-                            !string.IsNullOrEmpty(d.CurrentDriver) &&
-                            d.CurrentDriver.Equals("BTHUSB") &&
-                            supportedBluetoothDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value)));
+                        d => supportedBluetoothDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
+                             && !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("BTHUSB"));
 
-                BluetoothStackPanelDefault.Children.Clear();
-                _viewModel.InstallBthButtonEnabled = false;
+	            BluetoothStackPanelDefault.Children.Clear();
+	            _viewModel.InstallBthButtonEnabled = false;
 
-                foreach (var usbDevice in uninitialized)
-                {
-                    BluetoothStackPanelDefault.Children.Add(new TextBlock
-                    {
-                        Text = string.Format("Device #{0}: {1}", BluetoothStackPanelDefault.Children.Count, usbDevice),
-                        Tag = usbDevice,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(10, 0, 0, 10)
-                    });
+	            foreach (var usbDevice in uninitialized) {
+		            BluetoothStackPanelDefault.Children.Add(new TextBlock {
+			            Text = string.Format("Device #{0}: {1}", BluetoothStackPanelDefault.Children.Count, usbDevice),
+			            Tag = usbDevice,
+			            VerticalAlignment = VerticalAlignment.Center,
+			            Margin = new Thickness(10, 0, 0, 10)
+		            });
 
-                    _viewModel.InstallBthButtonEnabled = true;
-                }
+		            _viewModel.InstallBthButtonEnabled = true;
+	            }
             }
 
             // refresh devices filtering on supported Bluetooth hardware IDs and WinUSB driver (initialized)
             {
-                var initialized =
+	            var initialized =
                     usbDevices.Where(
-                        d =>
-                            !string.IsNullOrEmpty(d.CurrentDriver) &&
-                            d.CurrentDriver.Equals("WinUSB") &&
-                            supportedBluetoothDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value)));
+                        d => supportedBluetoothDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
+                             && !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("WinUSB"));
 
-                BluetoothStackPanelWinUsb.Children.Clear();
+	            BluetoothStackPanelWinUsb.Children.Clear();
 
-                foreach (var usbDevice in initialized)
-                {
-                    BluetoothStackPanelWinUsb.Children.Add(new TextBlock
-                    {
-                        Text = string.Format("Device #{0}: {1}", BluetoothStackPanelWinUsb.Children.Count, usbDevice),
-                        Tag = usbDevice,
-                        VerticalAlignment = VerticalAlignment.Center,
-                        Margin = new Thickness(10, 0, 0, 10)
-                    });
-                }
+	            foreach (var usbDevice in initialized) {
+		            BluetoothStackPanelWinUsb.Children.Add(new TextBlock {
+			            Text = string.Format("Device #{0}: {1}", BluetoothStackPanelWinUsb.Children.Count, usbDevice),
+			            Tag = usbDevice,
+			            VerticalAlignment = VerticalAlignment.Center,
+			            Margin = new Thickness(10, 0, 0, 10)
+		            });
+	            }
             }
         }
 
@@ -230,6 +217,7 @@ namespace ScpDriverInstaller
         #region Private fields
 
         private IntPtr _hWnd;
+
         private readonly UsbNotifier _hidUsbDs3 = new UsbNotifier(0x054C, 0x0268);
         private readonly UsbNotifier _winUsbDs3 = new UsbNotifier(0x054C, 0x0268, UsbDs3.DeviceClassGuid);
         private readonly UsbNotifier _hidUsbDs4 = new UsbNotifier(0x054C, 0x05C4);
@@ -255,69 +243,93 @@ namespace ScpDriverInstaller
             var rebootRequired = false;
             var failed = false;
             uint result = 0;
+
             var ds3InfPath = Path.Combine(GlobalConfiguration.AppDirectory, "WinUSB", "Ds3Controller.inf");
             var ds4InfPath = Path.Combine(GlobalConfiguration.AppDirectory, "WinUSB", "Ds4Controller.inf");
 
-            MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling3);
+            var supportedBluetoothDevices = IniConfig.Instance.BthDongleDriver.HardwareIds;
+            var supportedDualShockDevices = IniConfig.Instance.Ds3Driver.HardwareIds.Union(IniConfig.Instance.Ds4Driver.HardwareIds);
 
-            await Task.Run(() => result = Difx.Instance.Install(ds3InfPath,
-                DifxFlags.DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT | DifxFlags.DRIVER_PACKAGE_FORCE, out rebootRequired));
+            var regex = new Regex("VID_([0-9A-Z]{4})&PID_([0-9A-Z]{4})", RegexOptions.IgnoreCase);
 
-            // ERROR_NO_SUCH_DEVINST = 0xE000020B
-            if (result != 0 && result != 0xE000020B)
-            {
-                failed = true;
+            // Use Self-Signed Drivers?
+            if (_viewModel.SelfSignedDriversEnabled) {
+	            var usbDevices = WdiWrapper.Instance.UsbDeviceList.ToList();
 
-                ExtendedMessageBox.Show(this,
-                    Properties.Resources.SetupFailedTitle,
-                    Properties.Resources.SetupFailedInstructions,
-                    Properties.Resources.SetupFailedContent,
-                    string.Format(Properties.Resources.SetupFailedVerbose,
-                        new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
-                    Properties.Resources.SetupFailedFooter,
-                    TaskDialogIcon.Error);
-            }
+                await Task.Run(() => {
+                	foreach (
+                	    var usbDevice in
+                            usbDevices.Where(
+                                d => supportedDualShockDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
+                                     && !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("HidUsb"))
+                	) {
+                		if (IniConfig.Instance.Ds4Driver.HardwareIds.Any(s => s.Contains(regex.Match(usbDevice.HardwareId).Value))) {
+                			MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling4);
+                			DriverInstaller.InstallDualShock4Controller(usbDevice, force: _viewModel.ForceInstallEnabled);
+                		} else {
+                			MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling3);
+                			DriverInstaller.InstallDualShock3Controller(usbDevice, force: _viewModel.ForceInstallEnabled);
+                		}
+                	}
+                });
+            } else {
+	            MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling3);
 
-            MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling4);
+	            await Task.Run(() => result = Difx.Instance.Install(ds3InfPath,
+	                                          DifxFlags.DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT | DifxFlags.DRIVER_PACKAGE_FORCE, out rebootRequired));
 
-            await Task.Run(() => result = Difx.Instance.Install(ds4InfPath,
-                DifxFlags.DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT | DifxFlags.DRIVER_PACKAGE_FORCE, out rebootRequired));
+	            // ERROR_NO_SUCH_DEVINST = 0xE000020B
+	            if (result != 0 && result != 0xE000020B) {
+		            failed = true;
 
-            // ERROR_NO_SUCH_DEVINST = 0xE000020B
-            if (result != 0 && result != 0xE000020B)
-            {
-                failed = true;
+		            ExtendedMessageBox.Show(this,
+		                                    Properties.Resources.SetupFailedTitle,
+		                                    Properties.Resources.SetupFailedInstructions,
+		                                    Properties.Resources.SetupFailedContent,
+		                                    string.Format(Properties.Resources.SetupFailedVerbose,
+		                                                  new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
+		                                    Properties.Resources.SetupFailedFooter,
+		                                    TaskDialogIcon.Error);
+	            }
 
-                ExtendedMessageBox.Show(this,
-                    Properties.Resources.SetupFailedTitle,
-                    Properties.Resources.SetupFailedInstructions,
-                    Properties.Resources.SetupFailedContent,
-                    string.Format(Properties.Resources.SetupFailedVerbose,
-                        new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
-                    Properties.Resources.SetupFailedFooter,
-                    TaskDialogIcon.Error);
+	            MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling4);
+
+	            await Task.Run(() => result = Difx.Instance.Install(ds4InfPath,
+	                                          DifxFlags.DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT | DifxFlags.DRIVER_PACKAGE_FORCE, out rebootRequired));
+
+	            // ERROR_NO_SUCH_DEVINST = 0xE000020B
+	            if (result != 0 && result != 0xE000020B) {
+		            failed = true;
+
+		            ExtendedMessageBox.Show(this,
+		                                    Properties.Resources.SetupFailedTitle,
+		                                    Properties.Resources.SetupFailedInstructions,
+		                                    Properties.Resources.SetupFailedContent,
+		                                    string.Format(Properties.Resources.SetupFailedVerbose,
+		                                                  new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
+		                                    Properties.Resources.SetupFailedFooter,
+		                                    TaskDialogIcon.Error);
+	            }
             }
 
             MainBusyIndicator.IsBusy = !MainBusyIndicator.IsBusy;
 
-            if (!failed)
-            {
+            if (!failed) {
                 ExtendedMessageBox.Show(this,
-                    Properties.Resources.SetupSuccessTitle,
-                    Properties.Resources.DualShockSetupSuccessInstruction,
-                    Properties.Resources.SetupSuccessContent,
-                    string.Empty,
-                    string.Empty,
-                    TaskDialogIcon.Information);
+                                        Properties.Resources.DualShockSetupSuccessTitle,
+                                        Properties.Resources.DualShockSetupSuccessInstruction,
+                                        Properties.Resources.DualShockSetupSuccessContent,
+                                        string.Empty,
+                                        string.Empty,
+                                        TaskDialogIcon.Information);
             }
 
-            if (rebootRequired)
-            {
+            if (rebootRequired) {
                 MessageBox.Show(this,
-                    Properties.Resources.RebootRequiredContent,
-                    Properties.Resources.RebootRequiredTitle,
-                    MessageBoxButton.OK,
-                    MessageBoxImage.Warning);
+                                Properties.Resources.RebootRequiredContent,
+                                Properties.Resources.RebootRequiredTitle,
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Warning);
             }
         }
 
@@ -596,10 +608,10 @@ namespace ScpDriverInstaller
             }
 
 #if NOPE
-    // link download progress to progress bar
+            // link download progress to progress bar
             RedistPackageInstaller.Instance.ProgressChanged +=
                 (o, args) => { Dispatcher.Invoke(() => MainProgressBar.Value = args.CurrentProgressPercentage); };
-
+#endif
             // link NotifyAppender to TextBlock
             foreach (
                 var appender in
@@ -608,7 +620,6 @@ namespace ScpDriverInstaller
             {
                 LogTextBlock.DataContext = appender;
             }
-#endif
         }
 
         private void MainWindow_OnClosing(object sender, CancelEventArgs e)
@@ -773,5 +784,46 @@ namespace ScpDriverInstaller
         }
 
         #endregion Windows Service Helpers
+
+        #region Log Section
+        private Boolean AutoScroll = true;
+
+        private void LogScrollViewer_ScrollChanged(object sender, ScrollChangedEventArgs e) {
+        	// User scroll event : set or unset auto-scroll mode
+        	if (e.ExtentHeightChange == 0) {
+        		// Content unchanged : user scroll event
+        		if (LogScrollViewer.VerticalOffset == LogScrollViewer.ScrollableHeight) {
+        			// Scroll bar is in bottom
+        			// Set auto-scroll mode
+        			AutoScroll = true;
+        		} else {
+        			// Scroll bar isn't in bottom
+        			// Unset auto-scroll mode
+        			AutoScroll = false;
+        		}
+        	}
+
+        	// Content scroll event : auto-scroll eventually
+        	if (AutoScroll && e.ExtentHeightChange != 0) {
+        		// Content changed and auto-scroll mode set Autoscroll
+        		LogScrollViewer.ScrollToVerticalOffset(LogScrollViewer.ExtentHeight);
+        	}
+        }
+
+        private void CopyLogMenuItem_Click(object sender, RoutedEventArgs e) {
+        	Clipboard.SetText(LogTextBlock.Text);
+        }
+
+        private void LogSection_Collapsed(object sender, RoutedEventArgs e) {
+        	MainForm.Height = 735;
+        	SecondRow.Height = new GridLength(35);
+        }
+
+        private void LogSection_Expanded(object sender, RoutedEventArgs e) {
+        	MainForm.Height = 900;
+        	SecondRow.Height = new GridLength(200);
+        }
+        #endregion
+
     }
 }
