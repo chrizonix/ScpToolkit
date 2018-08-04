@@ -47,12 +47,6 @@
     <Setting Name="SwapTriggers" Provider="ScpControl.Utilities.PortableSettingsProvider" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="DeadZoneL" Provider="ScpControl.Utilities.PortableSettingsProvider" Type="System.Byte" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
-    <Setting Name="DeadZoneR" Provider="ScpControl.Utilities.PortableSettingsProvider" Type="System.Byte" Scope="User">
-      <Value Profile="(Default)">0</Value>
-    </Setting>
     <Setting Name="DumpHidReports" Type="System.Boolean" Scope="Application">
       <Value Profile="(Default)">False</Value>
     </Setting>
@@ -149,20 +143,26 @@
     <Setting Name="Ds4ShowBatteryInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
+    <Setting Name="DeadZoneL" Provider="ScpControl.Utilities.PortableSettingsProvider" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">16</Value>
+    </Setting>
+    <Setting Name="DeadZoneR" Provider="ScpControl.Utilities.PortableSettingsProvider" Type="System.Byte" Scope="User">
+      <Value Profile="(Default)">16</Value>
+    </Setting>
     <Setting Name="Ds4ColorFull" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">4278749189</Value>
     </Setting>
     <Setting Name="Ds4ColorHigh" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">4278324988</Value>
     </Setting>
     <Setting Name="Ds4ColorMedium" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">4293062146</Value>
     </Setting>
     <Setting Name="Ds4ColorLow" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">4291195904</Value>
     </Setting>
     <Setting Name="Ds4ColorDying" Type="System.UInt32" Scope="User">
-      <Value Profile="(Default)">0</Value>
+      <Value Profile="(Default)">4291428609</Value>
     </Setting>
   </Settings>
 </SettingsFile>
