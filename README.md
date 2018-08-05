@@ -1,7 +1,7 @@
 # ScpToolkit for Sony DualShock 3/4 Controllers
 Windows Driver and XInput Wrapper for Sony DualShock 3/4 Controllers
 
-## Changelog
+## Changelog v1.7.278.18217
 Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://github.com/nefarius/ScpToolkit))
  * Added Support for DualShock 4 v2 (USB\VID_054C&PID_09CC)
  * Added Custom Color Support for Battery Status (DualShock 4)
