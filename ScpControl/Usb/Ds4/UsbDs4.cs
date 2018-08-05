@@ -87,6 +87,23 @@ namespace ScpControl.Usb.Ds4
             }
         }
 
+        private void SetLightBarColorUInt(uint value)
+        {
+            System.Drawing.Color color = System.Drawing.Color.FromArgb((int)value);
+            double brightness = (double)GlobalConfiguration.Instance.Brightness / (double)255;
+
+            if (GlobalConfiguration.Instance.IsLightBarDisabled)
+            {
+                _hidReport[R] = _hidReport[G] = _hidReport[B] = _hidReport[12] = _hidReport[13] = 0x00;
+            }
+            else
+            {
+                _hidReport[R] = (byte)(color.R * brightness);
+                _hidReport[G] = (byte)(color.G * brightness);
+                _hidReport[B] = (byte)(color.B * brightness);
+            }
+        }
+
         #endregion
 
         #region Actions
@@ -314,9 +331,35 @@ namespace ScpControl.Usb.Ds4
                     _brightness = 0x00;
                 }
 
-                // set light bar color reflecting pad ID
-                if (XInputSlot.HasValue)
+                if (GlobalConfiguration.Instance.Ds4ShowBatteryInfo)
                 {
+                    switch (Battery)
+                    {
+                        case DsBattery.Dying:
+                            SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorDying);
+                            break;
+                        case DsBattery.Low:
+                            SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorLow);
+                            break;
+                        case DsBattery.Medium:
+                            SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorMedium);
+                            break;
+                        case DsBattery.High:
+                        case DsBattery.Charging:
+                            SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorHigh);
+                            break;
+                        case DsBattery.Full:
+                        case DsBattery.Charged:
+                            SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorFull);
+                            break;
+                        default:
+                            SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorDying);
+                            break;
+                    }
+                }
+                else if (XInputSlot.HasValue)
+                {
+                    // set light bar color reflecting pad ID
                     SetLightBarColor((DsPadId) XInputSlot);
                 }
 
