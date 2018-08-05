@@ -47,7 +47,16 @@ Changes to Official Release at [nefarius/ScpToolkit](https://github.com/nefarius
  * At least one supported Sony DualShock 3/4 controller (see **Compatible Controllers**)
  * Administrator rights *during driver setup*
 
-### Optional
+### Compatible Controllers
+ * **Original Sony DualShock 3 Controller**
+   * `USB\VID_054C&PID_0268`
+   * `USB\VID_054C&PID_042F`
+ * **Original Sony DualShock 4 Controller**
+   * `USB\VID_054C&PID_05C4`
+   * `USB\VID_054C&PID_09CC`
+ * See [**Compatible Controllers**](https://github.com/chrizonix/ScpToolkit/blob/master/ScpControl/ScpControl.ini)
+
+### Compatible Bluetooth Devices (Optional)
  * A supported Bluetooth 2.0 (or higher) compatible USB dongle **with EDR** (**E**nhanced **D**ata **R**ate)
  * See [**Compatible Bluetooth Devices**](https://github.com/nefarius/ScpToolkit/wiki/Compatible-Bluetooth-Devices)
  * For DS4s to be useable the minimal supported Bluetooth version is **2.1**!
@@ -66,11 +75,4 @@ Changes to Official Release at [nefarius/ScpToolkit](https://github.com/nefarius
 7. Click Install.
 8. You're done!
 
-## Compatible Controllers
- * **Original Sony DualShock 3 Controller**
-   * `USB\VID_054C&PID_0268`
-   * `USB\VID_054C&PID_042F`
- * **Original Sony DualShock 4 Controller**
-   * `USB\VID_054C&PID_05C4`
-   * `USB\VID_054C&PID_09CC`
- * A Complete List can be found [here](https://github.com/chrizonix/ScpToolkit/blob/master/ScpControl/ScpControl.ini)
+![ScpToolkit Driver Installer](https://camo.githubusercontent.com/6dddb290ffa4db72e3bf5518cb4c5213e1bc64f9/687474703a2f2f6e656661726975732e61742f77702d636f6e74656e742f75706c6f6164732f323031332f31322f33312d31302d5f323031355f31332d32372d35352e706e67)
