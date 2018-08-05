@@ -19,8 +19,7 @@ namespace ScpControl.Driver
                 SP_DEVINFO_DATA deviceInterfaceData = new SP_DEVINFO_DATA(), da = new SP_DEVINFO_DATA();
                 int bufferSize = 0, memberIndex = 0;
 
-                deviceInfoSet = SetupDiGetClassDevs(ref target, IntPtr.Zero, IntPtr.Zero,
-                    DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+                deviceInfoSet = SetupDiGetClassDevs(ref target, IntPtr.Zero, IntPtr.Zero, DIGCF_DEVICEINTERFACE);
 
                 deviceInterfaceData.cbSize = da.cbSize = Marshal.SizeOf(deviceInterfaceData);
 
@@ -131,8 +130,7 @@ namespace ScpControl.Driver
                 var deviceInterfaceData = new SP_DEVINFO_DATA();
 
                 deviceInterfaceData.cbSize = Marshal.SizeOf(deviceInterfaceData);
-                deviceInfoSet = SetupDiGetClassDevs(ref classGuid, IntPtr.Zero, IntPtr.Zero,
-                    DIGCF_PRESENT | DIGCF_DEVICEINTERFACE);
+                deviceInfoSet = SetupDiGetClassDevs(ref classGuid, IntPtr.Zero, IntPtr.Zero, DIGCF_DEVICEINTERFACE);
 
                 if (SetupDiOpenDeviceInfo(deviceInfoSet, instanceId, IntPtr.Zero, 0, ref deviceInterfaceData))
                 {
