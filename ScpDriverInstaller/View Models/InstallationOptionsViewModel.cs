@@ -17,8 +17,8 @@ namespace ScpDriverInstaller.View_Models
         public bool SelfSignedDriversEnabled { get; set; }
         public bool ForceInstallEnabled { get; set; }
 
-		public bool SelfSignedDriversBthEnabled { get; set; }
-		public bool ForceInstallBthEnabled { get; set; }
+        public bool SelfSignedDriversBthEnabled { get; set; }
+        public bool ForceInstallBthEnabled { get; set; }
 
         public InstallationOptionsViewModel()
         {
@@ -28,8 +28,8 @@ namespace ScpDriverInstaller.View_Models
             SelfSignedDriversEnabled = false;
             ForceInstallEnabled = false;
 
-			SelfSignedDriversBthEnabled = false;
-			ForceInstallBthEnabled = false;
+            SelfSignedDriversBthEnabled = false;
+            ForceInstallBthEnabled = false;
         }
     }
 }

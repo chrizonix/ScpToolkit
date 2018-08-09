@@ -281,13 +281,13 @@ namespace ScpDriverInstaller
                     failed = true;
 
                     ExtendedMessageBox.Show(this,
-						Properties.Resources.SetupFailedTitle,
-						Properties.Resources.SetupFailedInstructions,
-						Properties.Resources.SetupFailedContent,
-						string.Format(Properties.Resources.SetupFailedVerbose,
-										new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
-						Properties.Resources.SetupFailedFooter,
-						TaskDialogIcon.Error);
+                        Properties.Resources.SetupFailedTitle,
+                        Properties.Resources.SetupFailedInstructions,
+                        Properties.Resources.SetupFailedContent,
+                        string.Format(Properties.Resources.SetupFailedVerbose,
+                                        new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
+                        Properties.Resources.SetupFailedFooter,
+                        TaskDialogIcon.Error);
                 }
 
                 MainBusyIndicator.SetContentThreadSafe(Properties.Resources.DualShockSetupInstalling4);
@@ -300,13 +300,13 @@ namespace ScpDriverInstaller
                     failed = true;
 
                     ExtendedMessageBox.Show(this,
-						Properties.Resources.SetupFailedTitle,
-						Properties.Resources.SetupFailedInstructions,
-						Properties.Resources.SetupFailedContent,
-						string.Format(Properties.Resources.SetupFailedVerbose,
-										new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
-						Properties.Resources.SetupFailedFooter,
-						TaskDialogIcon.Error);
+                        Properties.Resources.SetupFailedTitle,
+                        Properties.Resources.SetupFailedInstructions,
+                        Properties.Resources.SetupFailedContent,
+                        string.Format(Properties.Resources.SetupFailedVerbose,
+                                        new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
+                        Properties.Resources.SetupFailedFooter,
+                        TaskDialogIcon.Error);
                 }
             }
 
@@ -324,10 +324,10 @@ namespace ScpDriverInstaller
 
             if (rebootRequired) {
                 MessageBox.Show(this,
-					Properties.Resources.RebootRequiredContent,
-					Properties.Resources.RebootRequiredTitle,
-					MessageBoxButton.OK,
-					MessageBoxImage.Warning);
+                    Properties.Resources.RebootRequiredContent,
+                    Properties.Resources.RebootRequiredTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
@@ -340,45 +340,45 @@ namespace ScpDriverInstaller
 
             var bhInfPath = Path.Combine(GlobalConfiguration.AppDirectory, "WinUSB", "BluetoothHost.inf");
 
-			var supportedBluetoothDevices = IniConfig.Instance.BthDongleDriver.HardwareIds;
+            var supportedBluetoothDevices = IniConfig.Instance.BthDongleDriver.HardwareIds;
             var regex = new Regex("VID_([0-9A-Z]{4})&PID_([0-9A-Z]{4})", RegexOptions.IgnoreCase);
 
-			// Use Self-Signed Drivers?
-			if (_viewModel.SelfSignedDriversBthEnabled) {
-				var usbDevices = WdiWrapper.Instance.UsbDeviceList.ToList();
+            // Use Self-Signed Drivers?
+            if (_viewModel.SelfSignedDriversBthEnabled) {
+                var usbDevices = WdiWrapper.Instance.UsbDeviceList.ToList();
 
-				await Task.Run(() => {
-					foreach (
-					    var usbDevice in
-							usbDevices.Where(
-								d => supportedBluetoothDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
-								&& !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("BTHUSB"))
-					) {
-						MainBusyIndicator.SetContentThreadSafe(Properties.Resources.BluetoothSetupInstalling);
-						DriverInstaller.InstallBluetoothHost(usbDevice, force: _viewModel.ForceInstallBthEnabled);
-					}
-				});
-			} else {
-				MainBusyIndicator.SetContentThreadSafe(Properties.Resources.BluetoothSetupInstalling);
+                await Task.Run(() => {
+                    foreach (
+                        var usbDevice in
+                            usbDevices.Where(
+                                d => supportedBluetoothDevices.Any(s => s.Contains(regex.Match(d.HardwareId).Value))
+                                && !string.IsNullOrEmpty(d.CurrentDriver) && d.CurrentDriver.Equals("BTHUSB"))
+                    ) {
+                        MainBusyIndicator.SetContentThreadSafe(Properties.Resources.BluetoothSetupInstalling);
+                        DriverInstaller.InstallBluetoothHost(usbDevice, force: _viewModel.ForceInstallBthEnabled);
+                    }
+                });
+            } else {
+                MainBusyIndicator.SetContentThreadSafe(Properties.Resources.BluetoothSetupInstalling);
 
-				await Task.Run(() => result = Difx.Instance.Install(bhInfPath,
-				                              DifxFlags.DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT | DifxFlags.DRIVER_PACKAGE_FORCE, out rebootRequired));
-			}
+                await Task.Run(() => result = Difx.Instance.Install(bhInfPath,
+                                              DifxFlags.DRIVER_PACKAGE_ONLY_IF_DEVICE_PRESENT | DifxFlags.DRIVER_PACKAGE_FORCE, out rebootRequired));
+            }
 
             MainBusyIndicator.IsBusy = !MainBusyIndicator.IsBusy;
 
             // ERROR_NO_SUCH_DEVINST = 0xE000020B
             if (result != 0 && result != 0xE000020B) {
-            	// display error message
-            	ExtendedMessageBox.Show(this,
-            	    Properties.Resources.SetupFailedTitle,
-            	    Properties.Resources.SetupFailedInstructions,
-            	    Properties.Resources.SetupFailedContent,
-            	    string.Format(Properties.Resources.SetupFailedVerbose,
-            	                    new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
-            	    Properties.Resources.SetupFailedFooter,
-            	    TaskDialogIcon.Error);
-            	return;
+                // display error message
+                ExtendedMessageBox.Show(this,
+                    Properties.Resources.SetupFailedTitle,
+                    Properties.Resources.SetupFailedInstructions,
+                    Properties.Resources.SetupFailedContent,
+                    string.Format(Properties.Resources.SetupFailedVerbose,
+                                    new Win32Exception(Marshal.GetLastWin32Error()), Marshal.GetLastWin32Error()),
+                    Properties.Resources.SetupFailedFooter,
+                    TaskDialogIcon.Error);
+                return;
             }
 
             // display success message
@@ -392,11 +392,11 @@ namespace ScpDriverInstaller
 
             // display reboot required message
             if (rebootRequired) {
-            	MessageBox.Show(this,
-					Properties.Resources.RebootRequiredContent,
-					Properties.Resources.RebootRequiredTitle,
-					MessageBoxButton.OK,
-					MessageBoxImage.Warning);
+                MessageBox.Show(this,
+                    Properties.Resources.RebootRequiredContent,
+                    Properties.Resources.RebootRequiredTitle,
+                    MessageBoxButton.OK,
+                    MessageBoxImage.Warning);
             }
         }
 
