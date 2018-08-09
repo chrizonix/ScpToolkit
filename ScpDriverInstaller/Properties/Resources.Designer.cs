@@ -79,6 +79,24 @@ namespace ScpDriverInstaller.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Force Driver Installation (most of the time not needed).
+        /// </summary>
+        public static string BluetoothSetupForceInstall {
+            get {
+                return ResourceManager.GetString("BluetoothSetupForceInstall", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Forces the installation of all drivers even if they are fine (most of the time not needed).
+        /// </summary>
+        public static string BluetoothSetupForceInstallTooltip {
+            get {
+                return ResourceManager.GetString("BluetoothSetupForceInstallTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Initialized Bluetooth Hosts.
         /// </summary>
         public static string BluetoothSetupInitialized {
@@ -102,6 +120,15 @@ namespace ScpDriverInstaller.Properties {
         public static string BluetoothSetupPleasePlugIn {
             get {
                 return ResourceManager.GetString("BluetoothSetupPleasePlugIn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Use Self-Signed Drivers (only needed for some devices).
+        /// </summary>
+        public static string BluetoothSetupSelfSignedDrivers {
+            get {
+                return ResourceManager.GetString("BluetoothSetupSelfSignedDrivers", resourceCulture);
             }
         }
         
@@ -151,7 +178,7 @@ namespace ScpDriverInstaller.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to You need to sacrifice a dedicated Bluetooth dongle that will get reserved for use with wireless controllers only. If you&apos;re using a wireless mouse and/or keyboard via the listed dongle and install the driver, you will lose connection instantly and permanently! If you&apos;re unsure what to do next,.
+        ///   Looks up a localized string similar to You need to sacrifice a dedicated Bluetooth dongle that will get reserved for use with wireless controllers only. If you&apos;re using a wireless mouse and/or keyboard via the listed dongle and install the driver, you will lose connection instantly and permanently!.
         /// </summary>
         public static string BluetoothSetupWarningBeforeLink {
             get {

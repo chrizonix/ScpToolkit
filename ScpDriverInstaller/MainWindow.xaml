@@ -158,11 +158,21 @@
                                 <TextBlock TextWrapping="Wrap" Text="{x:Static Properties:Resources.SetupPleaseStartInstall}" />
                             </TextBlock>
 
-                            <!-- Install button -->
-                            <Button IsEnabled="{Binding Path=InstallBthButtonEnabled}"
-                                    Click="InstallBthHostOnClick" Margin="20,0">
-                                <TextBlock Text="{x:Static Properties:Resources.BluetoothSetupStartInstall}" />
-                            </Button>
+                            <Expander Header="Advanced Settings"
+                                      IsExpanded="False"
+                                      ExpandDirection="Down"
+                                      VerticalAlignment="Top" Margin="20,10,20,0"
+                                      BorderBrush="LightGray">
+                                <StackPanel>
+                                    <CheckBox IsChecked="{Binding Path=SelfSignedDriversBthEnabled}"
+                                          Content="{x:Static Properties:Resources.BluetoothSetupSelfSignedDrivers}"
+                                          Margin="0,10,0,0"/>
+                                    <CheckBox IsChecked="{Binding Path=ForceInstallBthEnabled}"
+                                          Content="{x:Static Properties:Resources.BluetoothSetupForceInstall}"
+                                          ToolTip="{x:Static Properties:Resources.BluetoothSetupForceInstallTooltip}"
+                                          Margin="0,10,0,0"/>
+                                </StackPanel>
+                            </Expander>
                         </StackPanel>
 
                         <!-- Uninitialized -->
@@ -185,18 +195,19 @@
 
                         <!-- Warning -->
                         <StackPanel Grid.Row="1" Grid.Column="0">
+                            <!-- Install button -->
+                            <Button IsEnabled="{Binding Path=InstallBthButtonEnabled}"
+                                    Click="InstallBthHostOnClick" Margin="20,10,20,20">
+                                <TextBlock Text="{x:Static Properties:Resources.BluetoothSetupStartInstall}" />
+                            </Button>
+                            
                             <!-- You can also use a localized warning picture. Simply put it in ScpDriverInstaller\Images\Warning.$Locale.png and add it to your .resx file as "Warning" -->
-                            <Image Source="{Binding Source={x:Static Properties:Resources.Warning}, Converter={StaticResource BitmapToImageSource}}"  Stretch="UniformToFill" />
+                            <Image Source="{Binding Source={x:Static Properties:Resources.Warning}, Converter={StaticResource BitmapToImageSource}}"
+                                   Stretch="UniformToFill" Width="400"/>
 
                             <TextBlock TextWrapping="Wrap" TextAlignment="Justify" Margin="10" Foreground="#FFFF0000"
                                        FontWeight="Bold" FontSize="14">
                                 <TextBlock TextWrapping="Wrap" Text="{x:Static Properties:Resources.BluetoothSetupWarningBeforeLink}" />
-                                <Hyperlink
-                                    NavigateUri="https://github.com/nefarius/ScpToolkit/wiki/Bluetooth-driver-pitfalls"
-                                    RequestNavigate="Hyperlink_OnRequestNavigate">
-                                    <TextBlock TextWrapping="Wrap" Text="{x:Static Properties:Resources.BluetoothSetupWarningLink}" />
-                                </Hyperlink>
-                                <TextBlock TextWrapping="Wrap" Text="{x:Static Properties:Resources.BluetoothSetupWarningAfterLink}" />
                             </TextBlock>
                         </StackPanel>
                     </Grid>

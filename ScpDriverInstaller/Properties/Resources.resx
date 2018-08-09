@@ -125,6 +125,13 @@
     <value>In this step you can initialize one or more Bluetooth hosts.</value>
     <comment>Text directly visible under the title, showing a quick description of the Bluetooth driver setup</comment>
   </data>
+  <data name="BluetoothSetupForceInstall" xml:space="preserve">
+    <value>Force Driver Installation (most of the time not needed)</value>
+    <comment>Forces the installation of all drivers even if they are fine (most of the time not needed)</comment>
+  </data>
+  <data name="BluetoothSetupForceInstallTooltip" xml:space="preserve">
+    <value>Forces the installation of all drivers even if they are fine (most of the time not needed)</value>
+  </data>
   <data name="BluetoothSetupInitialized" xml:space="preserve">
     <value>Initialized Bluetooth Hosts</value>
     <comment>Header of the group of Bluetooth hosts ready for usage</comment>
@@ -136,6 +143,9 @@
   <data name="BluetoothSetupPleasePlugIn" xml:space="preserve">
     <value>If you haven't already please plug in your Bluetooth host device (a.k.a. Bluetooth dongle) now and wait until it appears in the list on the right.</value>
     <comment>Text asking the user to plug his Bluetooth dongle</comment>
+  </data>
+  <data name="BluetoothSetupSelfSignedDrivers" xml:space="preserve">
+    <value>Use Self-Signed Drivers (only needed for some devices)</value>
   </data>
   <data name="BluetoothSetupStartInstall" xml:space="preserve">
     <value>Initialize all connected devices as Bluetooth Hosts</value>
@@ -158,7 +168,7 @@
     <comment>The text shown after the link on the warning for the Bluetooth setup</comment>
   </data>
   <data name="BluetoothSetupWarningBeforeLink" xml:space="preserve">
-    <value>You need to sacrifice a dedicated Bluetooth dongle that will get reserved for use with wireless controllers only. If you're using a wireless mouse and/or keyboard via the listed dongle and install the driver, you will lose connection instantly and permanently! If you're unsure what to do next,</value>
+    <value>You need to sacrifice a dedicated Bluetooth dongle that will get reserved for use with wireless controllers only. If you're using a wireless mouse and/or keyboard via the listed dongle and install the driver, you will lose connection instantly and permanently!</value>
     <comment>The text shown before the link on the warning for the Bluetooth setup</comment>
   </data>
   <data name="BluetoothSetupWarningLink" xml:space="preserve">

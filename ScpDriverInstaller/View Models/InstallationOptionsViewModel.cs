@@ -12,12 +12,13 @@ namespace ScpDriverInstaller.View_Models
         }
 
         public bool InstallDs3ButtonEnabled { get; set; }
-
         public bool InstallBthButtonEnabled { get; set; }
 
         public bool SelfSignedDriversEnabled { get; set; }
-
         public bool ForceInstallEnabled { get; set; }
+
+		public bool SelfSignedDriversBthEnabled { get; set; }
+		public bool ForceInstallBthEnabled { get; set; }
 
         public InstallationOptionsViewModel()
         {
@@ -26,6 +27,9 @@ namespace ScpDriverInstaller.View_Models
 
             SelfSignedDriversEnabled = false;
             ForceInstallEnabled = false;
+
+			SelfSignedDriversBthEnabled = false;
+			ForceInstallBthEnabled = false;
         }
     }
 }
