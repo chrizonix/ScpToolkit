@@ -316,8 +316,8 @@ namespace ScpControl.Usb.Ds4
                         _brightness = GlobalConfiguration.Instance.Brightness;
                     }
 
-                    // enable/disable charging animation (flash)
-                    if (Battery != DsBattery.Charged)
+                    // Enable/Disable Charging Animation (Flash Light Bar)
+                    if (Battery != DsBattery.Charged && GlobalConfiguration.Instance.Ds4ShowChargingAnimation)
                     {
                         _hidReport[9] = _hidReport[10] = 0x80;
                     }

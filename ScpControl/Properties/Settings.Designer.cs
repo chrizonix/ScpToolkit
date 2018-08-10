@@ -612,6 +612,18 @@ namespace ScpControl.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Ds4ShowChargingAnimation {
+            get {
+                return ((bool)(this["Ds4ShowChargingAnimation"]));
+            }
+            set {
+                this["Ds4ShowChargingAnimation"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool Ds4ShowBatteryInfo {
             get {
                 return ((bool)(this["Ds4ShowBatteryInfo"]));

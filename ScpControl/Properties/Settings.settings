@@ -140,6 +140,9 @@
     <Setting Name="ServiceProcessPriority" Provider="ScpControl.Utilities.PortableSettingsProvider" Type="System.Diagnostics.ProcessPriorityClass" Scope="User">
       <Value Profile="(Default)">Normal</Value>
     </Setting>
+    <Setting Name="Ds4ShowChargingAnimation" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
     <Setting Name="Ds4ShowBatteryInfo" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>

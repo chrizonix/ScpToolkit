@@ -373,7 +373,8 @@
 
                         <!-- Checkboxes -->
                         <StackPanel Grid.Row="3" Margin="10">
-                            <CheckBox IsChecked="{Binding Path=Repair}">Always re-pair controller on Usb connection</CheckBox>
+                            <CheckBox IsChecked="{Binding Path=Repair}">Always Re-Pair Controller on USB Connection</CheckBox>
+                            <CheckBox IsChecked="{Binding Path=Ds4ShowChargingAnimation}">Show Charging Animation (Flash Light Bar)</CheckBox>
                         </StackPanel>
                     </Grid>
                 </ScrollViewer>

@@ -199,6 +199,12 @@ namespace ScpControl.ScpCore
             set { Settings.Default.Ds4Repair = value; }
         }
 
+        public bool Ds4ShowChargingAnimation
+        {
+            get { return Settings.Default.Ds4ShowChargingAnimation; }
+            set { Settings.Default.Ds4ShowChargingAnimation = value; }
+        }
+
         public bool Ds4ShowBatteryInfo
         {
             get { return Settings.Default.Ds4ShowBatteryInfo; }
