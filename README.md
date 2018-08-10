@@ -44,7 +44,7 @@ Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://g
  * [Microsoft Visual C++ 2013 Runtime](https://www.microsoft.com/en-US/download/details.aspx?id=40784)
  * [DirectX Runtime](https://www.microsoft.com/en-us/download/details.aspx?DisplayLang=en&id=35)
  * [Xbox 360 Controller driver](https://www.microsoft.com/accessories/en-us/products/gaming/xbox-360-controller-for-windows/52a-00004#techspecs-connect)
- * Already integrated in Windows 8.x or greater
+  * Already integrated in Windows 8.x or greater
  * At least one supported Sony DualShock 3/4 controller (see **Compatible Controllers**)
  * Administrator rights *during driver setup*
 
@@ -59,7 +59,7 @@ Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://g
 
 ### Compatible Bluetooth Devices (Optional)
  * A supported Bluetooth 2.0 (or higher) compatible USB dongle **with EDR** (**E**nhanced **D**ata **R**ate)
- * See [**Compatible Bluetooth Devices**](https://github.com/nefarius/ScpToolkit/wiki/Compatible-Bluetooth-Devices)
+  * See [**Compatible Bluetooth Devices**](https://github.com/nefarius/ScpToolkit/wiki/Compatible-Bluetooth-Devices)
  * For DS4s to be useable the minimal supported Bluetooth version is **2.1**!
 
 ## Installation How-To
