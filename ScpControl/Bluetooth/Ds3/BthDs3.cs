@@ -62,8 +62,12 @@ namespace ScpControl.Bluetooth.Ds3
                 && inputReport[Ds3Button.R1].IsPressed
                 && inputReport[Ds3Button.Ps].IsPressed)
             {
+                // Set Trigger
                 trigger = true;
-                // unset PS button
+
+                // Unset Pressed Buttons
+                inputReport.Unset(Ds3Button.L1);
+                inputReport.Unset(Ds3Button.R1);
                 inputReport.Unset(Ds3Button.Ps);
             }
 

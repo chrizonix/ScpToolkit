@@ -201,8 +201,12 @@ namespace ScpControl.Bluetooth.Ds4
                 && inputReport[Ds4Button.R1].IsPressed
                 && inputReport[Ds4Button.Ps].IsPressed)
             {
+                // Set Trigger
                 trigger = true;
-                // unset PS button
+
+                // Unset Pressed Buttons
+                inputReport.Unset(Ds4Button.L1);
+                inputReport.Unset(Ds4Button.R1);
                 inputReport.Unset(Ds4Button.Ps);
             }
 
