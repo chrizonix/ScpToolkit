@@ -47,6 +47,7 @@ namespace ScpControl.Shared.Core
         Medium = 0x03,
         High = 0x04,
         Full = 0x05,
+        Ultra = 0x06,
         Charging = 0xEE,
         Charged = 0xEF
     };

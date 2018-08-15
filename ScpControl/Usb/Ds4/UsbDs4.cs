@@ -349,6 +349,7 @@ namespace ScpControl.Usb.Ds4
                             SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorHigh);
                             break;
                         case DsBattery.Full:
+                        case DsBattery.Ultra:
                         case DsBattery.Charged:
                             SetLightBarColorUInt(GlobalConfiguration.Instance.Ds4ColorFull);
                             break;

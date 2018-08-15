@@ -206,6 +206,7 @@ namespace ScpControl.Bluetooth.Ds3
                                     _ledStatus = (byte) (_ledOffsets[0] | _ledOffsets[1] | _ledOffsets[2]);
                                     break;
                                 case DsBattery.Full:
+                                case DsBattery.Ultra:
                                     _ledStatus =
                                         (byte) (_ledOffsets[0] | _ledOffsets[1] | _ledOffsets[2] | _ledOffsets[3]);
                                     break;
