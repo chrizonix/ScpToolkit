@@ -10,6 +10,7 @@ Windows Driver and XInput Wrapper for Sony DualShock 3/4 Controllers
 ## Changelog v1.7.278.18228 ([Latest Version](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228))
 Changes since Release v1.7.278.18222
  * Added New Battery State (Ultra)
+ * Fixed Link of Xbox 360 Controller Driver
  * Fixed Quick Disconnect (L1, R1, PS) Buttons
  * Unset those Buttons, so they are not forwarded to XInput
 
