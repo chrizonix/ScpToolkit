@@ -47,7 +47,7 @@
                                 <TextBlock TextWrapping="Wrap" TextAlignment="Justify" Margin="10">
                                     <TextBlock TextWrapping="Wrap" Text="{x:Static Properties:Resources.Xbox360DriverNeededBeforeLink}" />
                                     <Hyperlink
-                                        NavigateUri="https://www.microsoft.com/hardware/en-US/d/xbox-360-controller-for-windows"
+                                        NavigateUri="https://www.microsoft.com/accessories/en-gb/d/xbox-360-controller-for-windows"
                                         RequestNavigate="Hyperlink_OnRequestNavigate">
                                         <TextBlock TextWrapping="Wrap" Text="{x:Static Properties:Resources.Xbox360DriverNeededLink}" />
                                     </Hyperlink>

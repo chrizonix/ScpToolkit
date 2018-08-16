@@ -11,7 +11,7 @@
 
         <TextBlock Grid.Row="0" Margin="10"
                    TextWrapping="Wrap" TextAlignment="Justify" Foreground="#FFB9B9B9" FontSize="14">
-            This emergency utility can assist you in removing old traces of faild or outdated installations obstructing a
+            This emergency utility can assist you in removing old traces of failed or outdated installations obstructing a
             successful fresh installation of the ScpToolkit and its drivers. If you've got troubles with the driver installer
             no one on the forums was able to help you might try this automated tool. It will try to stop, uninstall and kill
             any remains of the Windows Service, delete Virtual Bus and libusbK driver packages from the driver store and

@@ -197,7 +197,7 @@ namespace ScpCleanWipe
 
             MainButton.IsEnabled = !MainButton.IsEnabled;
 
-            MessageBox.Show("All steps finished, now try ScpDriverInstaller again! Good luck :)", "Finished",
+            MessageBox.Show("All steps finished! Good luck :)", "Finished",
                 MessageBoxButton.OK, MessageBoxImage.Information);
 
             Close();
