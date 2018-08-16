@@ -1,13 +1,25 @@
 # ScpToolkit for Sony DualShock 3/4 Controllers
 Windows Driver and XInput Wrapper for Sony DualShock 3/4 Controllers
 
-## Changelog v1.7.278.18222 ([Latest Version](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18222))
-Changes to Previous Release v1.7.278.18217
+[![GitHub Release](https://img.shields.io/github/release/chrizonix/ScpToolkit.svg)](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228)
+[![Github Releases (by Release)](https://img.shields.io/github/downloads/chrizonix/ScpToolkit/v1.7.278.18228/total.svg)](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228)
+[![Github Commits (since latest release)](https://img.shields.io/github/commits-since/chrizonix/ScpToolkit/latest.svg)](https://github.com/chrizonix/ScpToolkit/compare/v1.7.278.18228...master)
+[![GitHub Repo Size in Bytes](https://img.shields.io/github/repo-size/chrizonix/ScpToolkit.svg)](https://github.com/chrizonix/ScpToolkit)
+[![Github License](https://img.shields.io/github/license/chrizonix/ScpToolkit.svg)](LICENSE.md)
+
+## Changelog v1.7.278.18228 ([Latest Version](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228))
+Changes since Release v1.7.278.18222
+ * Added New Battery State (Ultra)
+ * Fixed Quick Disconnect (L1, R1, PS) Buttons
+ * Unset those Buttons, so they are not forwarded to XInput
+
+## Changelog v1.7.278.18222 ([Download](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18222))
+Changes since Release v1.7.278.18217
  * Enable/Disable Charging Animation
  * Using `ScpControl.ini` for Bluetooth Driver Install
 
 ## Changelog v1.7.278.18217 ([Download](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18217))
-Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://github.com/nefarius/ScpToolkit))
+Changes since Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://github.com/nefarius/ScpToolkit))
  * Added Support for DualShock 4 v2 (USB\VID_054C&PID_09CC)
  * Added Custom Color Support for Battery Status (DualShock 4)
  * Using `ScpControl.ini` for DualShock Controller Detection
@@ -49,7 +61,7 @@ Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://g
  * [Microsoft Visual C++ 2013 Runtime](https://www.microsoft.com/en-US/download/details.aspx?id=40784)
  * [DirectX Runtime](https://www.microsoft.com/en-us/download/details.aspx?DisplayLang=en&id=35)
  * [Xbox 360 Controller driver](https://www.microsoft.com/accessories/en-us/products/gaming/xbox-360-controller-for-windows/52a-00004#techspecs-connect)
-  * Already integrated in Windows 8.x or greater
+ * Already integrated in Windows 8.x or greater
  * At least one supported Sony DualShock 3/4 controller (see **Compatible Controllers**)
  * Administrator rights *during driver setup*
 
@@ -64,7 +76,7 @@ Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://g
 
 ### Compatible Bluetooth Devices (Optional)
  * A supported Bluetooth 2.0 (or higher) compatible USB dongle **with EDR** (**E**nhanced **D**ata **R**ate)
-  * See [**Compatible Bluetooth Devices**](https://github.com/nefarius/ScpToolkit/wiki/Compatible-Bluetooth-Devices)
+ * See [**Compatible Bluetooth Devices**](https://github.com/nefarius/ScpToolkit/wiki/Compatible-Bluetooth-Devices)
  * For DS4s to be useable the minimal supported Bluetooth version is **2.1**!
 
 ## Installation How-To
@@ -72,12 +84,12 @@ Changes to Official Release v1.7.277.16103-BETA ([nefarius/ScpToolkit](https://g
 2. Download the [latest release of the ScpToolkit Setup](https://github.com/chrizonix/ScpToolkit/releases) to an arbitrary location on your PC.
 3. Run the Setup and follow it's instructions. Should be fairly straight-forward.
 4. Wait for the Setup to finish.
-  * If you're performing a fresh installation, run the Driver Installer afterwards.
-  * If you're upgrading from an older installation you may skip the Driver Installer.
+   * If you're performing a fresh installation, run the Driver Installer afterwards.
+   * If you're upgrading from an older installation you may skip the Driver Installer.
 5. When running the Driver Installer, choose your Bluetooth and controller devices you like to use with ScpToolkit.
 6. The next step depends on your operating system:
- - Vista: check the Force Install option.
- - Win 7/8/8.1/10: leave it unchecked (or check if you're facing installation troubles, might help).
+   - Vista: check the Force Install option.
+   - Win 7/8/8.1/10: leave it unchecked (or check if you're facing installation troubles, might help).
 7. Click Install.
 8. You're done!
 
