@@ -1,11 +1,11 @@
 # ScpToolkit for Sony DualShock 3/4 Controllers
-Windows Driver and XInput Wrapper for Sony DualShock 3/4 Controllers
-
 [![GitHub Release](https://img.shields.io/github/release/chrizonix/ScpToolkit.svg)](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228)
 [![Github Releases (by Release)](https://img.shields.io/github/downloads/chrizonix/ScpToolkit/v1.7.278.18228/total.svg)](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228)
 [![Github Commits (since latest release)](https://img.shields.io/github/commits-since/chrizonix/ScpToolkit/latest.svg)](https://github.com/chrizonix/ScpToolkit/compare/v1.7.278.18228...master)
 [![GitHub Repo Size in Bytes](https://img.shields.io/github/repo-size/chrizonix/ScpToolkit.svg)](https://github.com/chrizonix/ScpToolkit)
 [![Github License](https://img.shields.io/github/license/chrizonix/ScpToolkit.svg)](LICENSE.md)
+
+Windows Driver and XInput Wrapper for Sony DualShock 3/4 Controllers
 
 ## Changelog v1.7.278.18228 ([Latest Version](https://github.com/chrizonix/ScpToolkit/releases/tag/v1.7.278.18228))
 Changes since Release v1.7.278.18222
