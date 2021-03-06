@@ -148,8 +148,11 @@
     </Compile>
     <Compile Include="Rx\IChannel.cs" />
     <Compile Include="Rx\ScpNativeFeedChannel.cs" />
+    <Compile Include="Rx\ScpUdpServer.cs" />
     <Compile Include="ScpCore\SingletonBase.cs" />
     <Compile Include="Sound\AudioPlayer.cs" />
+    <Compile Include="Usb\Ds3\DS3Cal.cs" />
+    <Compile Include="Usb\Ds4\DS4Cal.cs" />
     <Compile Include="Usb\Gamepads\UsbBadBigBenGamepad.cs" />
     <Compile Include="Usb\Gamepads\UsbGenericGamepad.cs" />
     <Compile Include="Usb\Ds3\Replica\UsbDs3Afterglow.cs" />
@@ -241,6 +244,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="DIFxAPI\x86\DIFxAPI.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ds3cal\x64\ds3cal.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ds3cal\x86\ds3cal.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="FodyWeavers.xml" />

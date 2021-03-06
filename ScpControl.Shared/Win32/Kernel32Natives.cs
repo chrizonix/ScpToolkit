@@ -17,6 +17,12 @@ namespace ScpControl.Shared.Win32
         [DllImport("kernel32.dll")]
         public static extern bool FreeLibrary(IntPtr hModule);
 
+		[DllImport("kernel32.dll")]
+		public static extern bool QueryPerformanceCounter(out long lpPerformanceCount);
+		[DllImport("kernel32.dll")]
+		public static extern bool QueryPerformanceFrequency(out long lpFrequency);
+
+
         /// <summary>
         ///     Translates a native method into a managed delegate.
         /// </summary>

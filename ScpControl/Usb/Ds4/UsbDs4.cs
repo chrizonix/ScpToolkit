@@ -36,6 +36,8 @@ namespace ScpControl.Usb.Ds4
 
         private byte _brightness = GlobalConfiguration.Instance.Brightness;
 
+		private DS4Cal _cal;
+
         #endregion
 
         #region Ctors
@@ -155,6 +157,17 @@ namespace ScpControl.Usb.Ds4
                         new PhysicalAddress(new[]
                         {m_Buffer[6], m_Buffer[5], m_Buffer[4], m_Buffer[3], m_Buffer[2], m_Buffer[1]});
                 }
+
+				//read calibration words
+				if (SendTransfer(UsbHidRequestType.DeviceToHost, UsbHidRequest.GetReport, 0x0302, m_Buffer, ref transfered))
+				{
+					var calData = new byte[transfered];
+					Array.Copy(m_Buffer, calData, transfered);
+
+					string hex = BitConverter.ToString(calData).Replace('-', ' ');
+					Log.InfoFormat("DS4 USB CAL DATA({0}): {1}", transfered, hex);
+					_cal = new DS4Cal(calData);
+				}
             }
 
             return State == DsState.Reserved;
@@ -237,6 +250,9 @@ namespace ScpControl.Usb.Ds4
             return false;
         }
 
+		private int _prevReportTimestamp = -1;
+		private long _prevFullTime = 0;
+
         /// <summary>
         ///     Interprets a HID report sent by a DualShock 4 device.
         /// </summary>
@@ -289,8 +305,29 @@ namespace ScpControl.Usb.Ds4
 
             #endregion
 
+			// apply calibration if we have it
+			if (_cal != null)
+				_cal.ApplyCalToInReport(report, 0);
+
             // copy controller data to report packet
             Buffer.BlockCopy(report, 0, inputReport.RawBytes, 8, 64);
+
+			// convert wrapped time to absolute time
+			var timestamp = (ushort)inputReport.Timestamp;
+			if (_prevReportTimestamp < 0) //first one, start from zero
+				inputReport.Timestamp = ((uint)timestamp * 16) / 3;				
+			else
+			{
+				ushort delta;
+				if (_prevReportTimestamp > timestamp) //wrapped around
+					delta = (ushort)(ushort.MaxValue - _prevReportTimestamp + timestamp + 1);
+				else
+					delta = (ushort)(timestamp - _prevReportTimestamp);
+
+				inputReport.Timestamp = _prevFullTime + (((uint)delta * 16) / 3);
+			}
+			_prevReportTimestamp = timestamp;
+			_prevFullTime = inputReport.Timestamp;
 
             OnHidReportReceived(inputReport);
         }

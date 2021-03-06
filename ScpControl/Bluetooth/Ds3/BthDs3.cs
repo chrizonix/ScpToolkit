@@ -3,6 +3,10 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using ScpControl.ScpCore;
 using ScpControl.Shared.Core;
+using ScpControl.Usb.Ds3;
+using ScpControl.Database;
+using ScpControl.Utilities;
+using ScpControl.Shared.Utilities;
 
 namespace ScpControl.Bluetooth.Ds3
 {
@@ -15,6 +19,7 @@ namespace ScpControl.Bluetooth.Ds3
 
         private byte _counterForLeds;
         private byte _ledStatus;
+		private DS3CalInstance _cal;
 
         #endregion
 
@@ -25,7 +30,34 @@ namespace ScpControl.Bluetooth.Ds3
             CanStartHid = false;
             State = DsState.Connected;
 
-            m_Queued = 1;
+			byte[] eepromContents = null, statusContents = null;
+			using (var db = new ScpDb())
+			{
+				using (var tran = db.Engine.GetTransaction())
+				{
+					var row = tran.Select<byte[],byte[]>(ScpDb.TableDS3Data, DeviceAddress.GetAddressBytes());
+					if (row.Exists)
+					{
+						eepromContents = new byte[49];
+						statusContents = new byte[49];
+
+						var rowData = row.Value;
+						Array.Copy(rowData, 0, eepromContents, 0, eepromContents.Length);
+						Array.Copy(rowData, eepromContents.Length, statusContents, 0, statusContents.Length);
+					}
+				}
+			}
+
+			if (eepromContents != null && statusContents != null)
+			{
+				_cal = new DS3CalInstance(DeviceAddress, eepromContents);
+				_cal.InitialCal(statusContents);
+			}
+
+			if (!IsFake && _cal == null)
+				Log.WarnFormat("EEPROM data for DS3 controller {0} not present, please connect it via USB first!", DeviceAddress.AsFriendlyName());
+
+			m_Queued = 1;
             m_Blocked = true;
             m_Last = DateTime.Now;
             BluetoothDevice.HID_Command(HciHandle.Bytes, Get_SCID(L2CAP.PSM.HID_Command), _hidCommandEnable);
@@ -40,6 +72,7 @@ namespace ScpControl.Bluetooth.Ds3
         public override void ParseHidReport(byte[] report)
         {
             if (report[10] == 0xFF) return;
+			AccurateTime currentTime = AccurateTime.Now;
 
             m_PlugStatus = report[38];
             Battery = (DsBattery) report[39];
@@ -52,8 +85,15 @@ namespace ScpControl.Bluetooth.Ds3
             
             inputReport.PacketCounter = m_Packet;
 
+			// convert accel/gyro values
+			if (_cal != null)
+				_cal.ApplyCalToInReport(report, 9);
+
             // copy controller data to report packet
             Buffer.BlockCopy(report, 9, inputReport.RawBytes, 8, 49);
+
+			// DS3 does not have timestamp in reports, so just give system time
+			inputReport.Timestamp = (long)Math.Round(currentTime.ToSeconds() * 1000000); //convert from s to us
 
             var trigger = false;
 
@@ -104,16 +144,34 @@ namespace ScpControl.Bluetooth.Ds3
         {
             lock (_hidOutputReport)
             {
-                if (GlobalConfiguration.Instance.DisableRumble)
-                {
-                    _hidOutputReport[4] = 0;
-                    _hidOutputReport[6] = 0;
-                }
-                else
-                {
-                    _hidOutputReport[4] = (byte) (small > 0 ? 0x01 : 0x00);
-                    _hidOutputReport[6] = large;
-                }
+				//zero out marker and value bytes for rumble first
+				_hidOutputReport[3] = 0;
+				_hidOutputReport[4] = 0;
+				_hidOutputReport[5] = 0;
+				_hidOutputReport[6] = 0;
+
+				if (_cal != null)
+					_cal.ApplyCalToOutReport(_hidOutputReport, 2);
+
+				if (_hidOutputReport[5] != 0xFF) //if not already used for cal
+				{
+					//set marker bytes for rumble
+					_hidOutputReport[3] = 0xFF;
+					_hidOutputReport[5] = 0xFF;
+
+					if (GlobalConfiguration.Instance.DisableRumble)
+					{
+						_hidOutputReport[4] = 0;
+						_hidOutputReport[6] = 0;
+					}
+					else
+					{
+						_hidOutputReport[4] = (byte)(small > 0 ? 0x01 : 0x00);
+						_hidOutputReport[6] = large;
+					}
+				}
+
+				_hidOutputReport[11] = _ledStatus;
 
                 if (!m_Blocked && GlobalConfiguration.Instance.Latency == 0)
                 {
@@ -243,6 +301,9 @@ namespace ScpControl.Bluetooth.Ds3
 
                 #endregion
 
+				if (_cal != null)
+					_cal.ApplyCalToOutReport(_hidOutputReport, 2);
+
                 if (m_Blocked || m_Queued <= 0) return;
 
                 if (!((now - m_Last).TotalMilliseconds >= GlobalConfiguration.Instance.Latency)) return;
@@ -307,7 +368,7 @@ namespace ScpControl.Bluetooth.Ds3
         private readonly byte[] _hidOutputReport =
         {
             0x52, 0x01,
-            0x00, 0xFF, 0x00, 0xFF, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00,
             0xFF, 0x27, 0x10, 0x00, 0x32,
             0xFF, 0x27, 0x10, 0x00, 0x32,

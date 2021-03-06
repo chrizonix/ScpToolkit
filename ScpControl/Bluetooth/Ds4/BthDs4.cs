@@ -4,6 +4,7 @@ using System.Net.NetworkInformation;
 using System.Threading;
 using ScpControl.ScpCore;
 using ScpControl.Shared.Core;
+using ScpControl.Usb.Ds4;
 
 namespace ScpControl.Bluetooth.Ds4
 {
@@ -30,6 +31,9 @@ namespace ScpControl.Bluetooth.Ds4
         private const int B = 11; // Led Offsets
         private byte _brightness = GlobalConfiguration.Instance.Brightness;
         private bool _flash;
+
+		private DS4Cal _cal;
+		private int _calGetTries;
 
         #endregion
 
@@ -131,15 +135,19 @@ namespace ScpControl.Bluetooth.Ds4
         public override bool Start()
         {
             CanStartHid = false;
-            State = DsState.Connected;
+            State = DsState.Reserved;
 
             _hidReport[2] = (byte) GlobalConfiguration.Instance.Ds4InputUpdateDelay;
 
-            m_Last = DateTime.Now;
-            Rumble(0, 0);
+			_calGetTries = 0;
 
-            return base.Start();
+			m_Last = DateTime.Now;
+			BluetoothDevice.HID_Command(HciHandle.Bytes, Get_SCID(L2CAP.PSM.HID_Command), _getCalFeatureReport);
+            return true;
         }
+
+		private int _prevReportTimestamp = -1;
+		private long _prevFullTime = 0;
 
         /// <summary>
         ///     Interprets a HID report sent by a DualShock 4 device.
@@ -147,6 +155,64 @@ namespace ScpControl.Bluetooth.Ds4
         /// <param name="report">The HID report as byte array.</param>
         public override void ParseHidReport(byte[] report)
         {
+			if (report[8] == 0xA3 && report[9] == 0x05) //feature report with crc
+			{
+				_calGetTries++;
+				bool startDevice = false;
+
+				//what we need to take crc32 of
+				byte[] crcBuf = new byte[0x26];
+				Array.Copy(report, 8, crcBuf, 0, crcBuf.Length);
+
+				//crc32 from the packet
+				byte[] srcCrc32Bytes = new byte[4];
+				Array.Copy(report, 8 + crcBuf.Length, srcCrc32Bytes, 0, srcCrc32Bytes.Length);
+
+				//crc32 computed
+				uint crcInt = ScpControl.Shared.Utilities.Crc32.Compute(crcBuf);
+				byte[] crcBytes = BitConverter.GetBytes(crcInt);
+
+				if (crcBytes[0] == srcCrc32Bytes[0] &&
+					crcBytes[1] == srcCrc32Bytes[1] &&
+					crcBytes[2] == srcCrc32Bytes[2] &&
+					crcBytes[3] == srcCrc32Bytes[3])
+				{
+					var calData = new byte[0x25];
+					Array.Copy(crcBuf, 1, calData, 0, calData.Length);
+
+					string hex = BitConverter.ToString(calData).Replace('-', ' ');
+					Log.InfoFormat("DS4 BTH CAL DATA({0}): {1}", calData.Length, hex);
+					_cal = new DS4Cal(calData);
+
+					startDevice = true;
+				}
+				else if (_calGetTries >= 3)
+				{
+					startDevice = true;
+					Log.WarnFormat("DS4 Cal CRC32 failed after {0} tries, skipping", _calGetTries);
+					_cal = null;
+				}
+				else if (startDevice == false)
+				{
+					//ask for it again
+					m_Last = DateTime.Now;
+					BluetoothDevice.HID_Command(HciHandle.Bytes, Get_SCID(L2CAP.PSM.HID_Command), _getCalFeatureReport);
+				}
+
+				if (startDevice)
+				{
+					State = DsState.Connected;
+
+					_calGetTries = int.MinValue;
+					m_Last = DateTime.Now;
+					Rumble(0, 0);
+
+					base.Start();
+				}
+
+				return;
+			}
+
             m_Packet++;
 
             var inputReport = NewHidReport();
@@ -190,8 +256,29 @@ namespace ScpControl.Bluetooth.Ds4
             }
             //--
 
+			// apply calibration if we have it
+			if (_cal != null)
+				_cal.ApplyCalToInReport(report, 11);
+
             // copy controller data to report packet
             Buffer.BlockCopy(report, 11, inputReport.RawBytes, 8, 76);
+
+			// convert wrapped time to absolute time
+			var timestamp = (ushort)inputReport.Timestamp;
+			if (_prevReportTimestamp < 0) //first one, start from zero
+				inputReport.Timestamp = ((uint)timestamp * 16) / 3;
+			else
+			{
+				ushort delta;
+				if (_prevReportTimestamp > timestamp) //wrapped around
+					delta = (ushort)(ushort.MaxValue - _prevReportTimestamp + timestamp + 1);
+				else
+					delta = (ushort)(timestamp - _prevReportTimestamp);
+
+				inputReport.Timestamp = _prevFullTime + (((uint)delta * 16) / 3);
+			}
+			_prevReportTimestamp = timestamp;
+			_prevFullTime = inputReport.Timestamp;
 
             // set report ID
             inputReport.RawBytes[8] = report[9];
@@ -524,6 +611,11 @@ namespace ScpControl.Bluetooth.Ds4
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
         };
+
+		private readonly byte[] _getCalFeatureReport =
+		{
+			0x43, 0x05, //GET REPORT, FEATURE, ID 5
+		};
 
         #endregion
 

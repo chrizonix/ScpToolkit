@@ -51,6 +51,10 @@ namespace ScpControl.Database
 
         public static string TableProfiles { get { return "tScpProfiles"; } }
 
+		public static string TableDS3Data { get { return "tDS3Data"; } }
+
+		public static string TableDS3Cal { get { return "tDS3Cal"; } }
+
         public void Dispose()
         {
             if (Engine != null)

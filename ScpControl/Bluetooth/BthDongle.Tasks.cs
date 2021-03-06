@@ -232,6 +232,11 @@ namespace ScpControl.Bluetooth
                 // HID report received, parse content and extract gamepad data
                 connection.ParseHidReport(buffer);
             }
+			else if (buffer[8] == 0xA3 && buffer[9] == 0x5) //calibration feature report
+			{
+				// calibration report received, extract the words and start normal output reports
+				connection.ParseHidReport(buffer);
+			}
             else if (connection.InitHidReport(buffer))
             {
                 connection.CanStartHid = true;
